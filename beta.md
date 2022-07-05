@@ -1,6 +1,7 @@
-# 1.2.0.15
+# 2.1.0.0
 
-- The last update of the month
-- change some kamyroll stuff
-- Fix 9anime tomfoolery
-- maybe fixed firebase thingy, idk
+- Added some customised settings, including, but not limited to:
+  - Kamyroll standard
+  - 1920x1080 standard
+  - Dark mode standard
+  - Changed a few reader settings
