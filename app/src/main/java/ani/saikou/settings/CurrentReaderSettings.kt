@@ -6,9 +6,9 @@ data class CurrentReaderSettings(
     var direction: Directions = Directions.TOP_TO_BOTTOM,
     var layout: Layouts = Layouts.CONTINUOUS,
     var dualPageMode: DualPageModes = DualPageModes.Automatic,
-    var trueColors: Boolean = false,
+    var trueColors: Boolean = true,
     var rotation: Boolean = true,
-    var padding: Boolean = true,
+    var padding: Boolean = false,
     var horizontalScrollBar: Boolean = true,
     var keepScreenOn: Boolean = false,
 ) : Serializable {

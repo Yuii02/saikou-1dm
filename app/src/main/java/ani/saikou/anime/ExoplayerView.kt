@@ -823,7 +823,7 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
         trackSelector = DefaultTrackSelector(this)
         trackSelector.setParameters(
             trackSelector.buildUponParameters()
-                .setMinVideoSize(loadData("maxWidth", this) ?: 720, loadData("maxHeight", this) ?: 480)
+                .setMinVideoSize(loadData("maxWidth", this) ?: 1980, loadData("maxHeight", this) ?: 1080)
                 .setMaxVideoSize(1, 1)
         )
 

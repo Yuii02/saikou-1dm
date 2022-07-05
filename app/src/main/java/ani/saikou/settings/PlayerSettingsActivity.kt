@@ -41,12 +41,12 @@ class PlayerSettingsActivity : AppCompatActivity() {
             saveData(player, settings)
         }
 
-        binding.playerSettingsQualityHeight.setText((loadData<Int>("maxHeight", toast = false) ?: 480).toString())
+        binding.playerSettingsQualityHeight.setText((loadData<Int>("maxHeight", toast = false) ?: 1080).toString())
         binding.playerSettingsQualityHeight.addTextChangedListener {
             val height = binding.playerSettingsQualityHeight.text.toString().toIntOrNull()
             saveData("maxHeight", height)
         }
-        binding.playerSettingsQualityWidth.setText((loadData<Int>("maxWidth", toast = false) ?: 720).toString())
+        binding.playerSettingsQualityWidth.setText((loadData<Int>("maxWidth", toast = false) ?: 1920).toString())
         binding.playerSettingsQualityWidth.addTextChangedListener {
             val height = binding.playerSettingsQualityWidth.text.toString().toIntOrNull()
             saveData("maxWidth", height)

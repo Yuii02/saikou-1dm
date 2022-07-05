@@ -3,7 +3,7 @@ package ani.saikou.settings
 import java.io.Serializable
 
 data class UserInterfaceSettings(
-    var darkMode: Boolean? = null,
+    var darkMode: Boolean? = true,
     var showYtButton: Boolean = true,
     var animeDefaultView: Int = 0,
     var mangaDefaultView: Int = 0,

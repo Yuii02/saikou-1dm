@@ -1,3 +1,13 @@
+# **Difference to Original**
+- added direct 1DM integration to download m3u8 files
+- changed the app name to Saikou Ω
+- set dark mode to default
+- set default resolution to 1920x1080
+- set Kamyroll as default source
+- changed a few other settings
+
+As you can see, this is pretty much just my spin on Saikou with a few changes and tweaks here and there
+
 # **Saikou**
 <p align="center">
    <a href="https://discord.gg/5TXAWTU5qr"><img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white"></a>
