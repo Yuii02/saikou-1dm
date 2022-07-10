@@ -47,7 +47,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: v${{ env.VERSION }}
-        release_name: Saikou Beta ${{ env.VERSION }}
+        release_name: Saikou 1DM ${{ env.VERSION }}
         body_path: "beta.md"
         draft: false
         prerelease: true
