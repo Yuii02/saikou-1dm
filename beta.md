@@ -9,6 +9,7 @@
 - Fixed MangaSee not loading chapters for some mangas
 - Fixed Other Dead Sources
 - Fixed Firebase
+- 
 - Added some customised settings, including, but not limited to:
   - Kamyroll standard
   - 1920x1080 standard
