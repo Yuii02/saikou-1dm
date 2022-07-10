@@ -286,7 +286,7 @@ class AnilistQueries {
         val responseArray = arrayListOf<Media>()
         try {
             val response =
-                executeQuery<Query.User>("""{User(id:${Anilist.userid}){favourites{${if (anime) "anime" else "manga"}(page:0){edges{favouriteOrder node{id idMal isAdult mediaListEntry{progress score(format:POINT_100)status}chapters isFavourite episodes nextAiringEpisode{episode}meanScore isFavourite title{english romaji userPreferred}type status(version:2)bannerImage coverImage{large}}}}}}}""")
+                executeQuery<Query.User>("""{User(id:${Anilist.userid}){id favourites{${if (anime) "anime" else "manga"}(page:0){edges{favouriteOrder node{id idMal isAdult mediaListEntry{progress score(format:POINT_100)status}chapters isFavourite episodes nextAiringEpisode{episode}meanScore isFavourite title{english romaji userPreferred}type status(version:2)bannerImage coverImage{large}}}}}}}""")
             val user: User = response?.data?.user ?: return responseArray
             val favourites = user.favourites
             val apiMediaList = if (anime) favourites?.anime else favourites?.manga
@@ -733,6 +733,7 @@ Page(page:1,perPage:50) {
     suspend fun getStudioDetails(studio: Studio): Studio {
         fun query(page: Int = 0) = """ {
   Studio(id: ${studio.id}) {
+    id
     media(page: $page,sort:START_DATE_DESC) {
       pageInfo{
         hasNextPage

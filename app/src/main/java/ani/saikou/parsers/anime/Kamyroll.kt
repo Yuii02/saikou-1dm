@@ -35,7 +35,7 @@ class Kamyroll : AnimeParser() {
                 val series: MutableMap<String, String> = mutableMapOf()
             )
 
-            val epMap = mutableMapOf<Long, Temp>()
+            val epMap = mutableMapOf<Float, Temp>()
             val dataList = (eps.items ?: return listOf()).mapNotNull { item ->
                 val tit = item.title ?: return@mapNotNull null
                 (item.episodes ?: return@mapNotNull null).map {
@@ -58,7 +58,7 @@ class Kamyroll : AnimeParser() {
             epMap.map {
                 if (it.value.thumb != null)
                     Episode(
-                        it.key.toString(),
+                        it.key.toString().replace(".0",""),
                         it.value.type,
                         it.value.title,
                         it.value.thumb!!,
@@ -275,12 +275,12 @@ class Kamyroll : AnimeParser() {
         @SerialName("type") val type: String,
 
         @SerialName("season_number")
-        val seasonNumber: Long? = null,
+        val seasonNumber: Float? = null,
 
         @SerialName("episode") val episode: String? = null,
 
         @SerialName("sequence_number")
-        val sequenceNumber: Long,
+        val sequenceNumber: Float,
 
         @SerialName("title")
         val title: String? = null,

@@ -14,6 +14,7 @@ object AnimeSources : WatchSources() {
         "Tenshi" to ::Tenshi,
         "9Anime Backup" to ::AnimeKisa,
         "AnimePahe" to ::AnimePahe,
+        "AnimixPlay" to ::AnimixPlay,
     )
 }
 

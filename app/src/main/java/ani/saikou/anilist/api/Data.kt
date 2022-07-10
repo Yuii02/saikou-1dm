@@ -59,6 +59,7 @@ class Query{
         )
     }
 
+    @Serializable
     data class Studio(
         @SerialName("data")
         val data: Data?

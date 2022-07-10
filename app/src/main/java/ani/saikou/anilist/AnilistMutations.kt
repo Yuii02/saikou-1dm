@@ -1,6 +1,7 @@
 package ani.saikou.anilist
 
 import ani.saikou.anilist.api.FuzzyDate
+import kotlinx.serialization.json.JsonObject
 
 class AnilistMutations {
 
@@ -8,7 +9,7 @@ class AnilistMutations {
         val query =
             """mutation (${"$"}animeId: Int,${"$"}mangaId:Int) { ToggleFavourite(animeId:${"$"}animeId,mangaId:${"$"}mangaId){ anime { edges { id } } manga { edges { id } } } }"""
         val variables = if (anime) """{"animeId":"$id"}""" else """{"mangaId":"$id"}"""
-        executeQuery<Any>(query, variables)
+        executeQuery<JsonObject>(query, variables)
     }
 
     suspend fun editList(
@@ -32,12 +33,12 @@ class AnilistMutations {
             ${if (score != null) ""","scoreRaw":$score""" else ""}
             ${if (status != null) ""","status":"$status"""" else ""}
             }""".replace("\n", "").replace("""    """, "")
-        executeQuery<String>(query, variables)
+        executeQuery<JsonObject>(query, variables)
     }
 
     suspend fun deleteList(listId: Int) {
         val query = "mutation(${"$"}id:Int){DeleteMediaListEntry(id:${"$"}id){deleted}}"
         val variables = """{"id":"$listId"}"""
-        executeQuery<String>(query, variables)
+        executeQuery<JsonObject>(query, variables)
     }
 }
