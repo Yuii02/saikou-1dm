@@ -14,3 +14,5 @@
   - 1920x1080 standard
   - Dark mode standard
   - Changed a few reader settings
+- Can now be installed with Saikoi Beta, without replacing it
+- Autoupdate now checks github.com/adolar0042/saikou-1dm
