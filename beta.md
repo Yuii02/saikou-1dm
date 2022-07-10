@@ -15,4 +15,4 @@
   - Dark mode standard
   - Changed a few reader settings
 - Can now be installed with Saikoi Beta, without replacing it
-- Autoupdate now checks github.com/adolar0042/saikou-1dm
+- Autoupdate now checks https://github.com/adolar0042/saikou-1dm instead of https://github.com/saikou-app/saikou
