@@ -1,4 +1,4 @@
-# 1.2.0.16
+# 2.2.0.0
 
 - Long Clicking Video Links will now be openable with different Browser/Downloaders (thanks to @adolar0042 & @diegopyl1209)
 - Sort in Anime & Manga Lists @defcoding
