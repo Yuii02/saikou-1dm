@@ -1,34 +1,39 @@
 package ani.saikou.anilist.api
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Studio(
     // The id of the studio
-    var id: Int,
+    @SerialName("id") var id: Int,
 
     // The name of the studio
     // Originally non-nullable, needs to be nullable due to it not being always queried
-    var name: String?,
+    @SerialName("name") var name: String?,
 
     // If the studio is an animation studio or a different kind of company
-    var isAnimationStudio: Boolean?,
+    @SerialName("isAnimationStudio") var isAnimationStudio: Boolean?,
 
     // The media the studio has worked on
-    var media: MediaConnection?,
+    @SerialName("media") var media: MediaConnection?,
 
     // The url for the studio page on the AniList website
-    var siteUrl: String?,
+    @SerialName("siteUrl") var siteUrl: String?,
 
     // If the studio is marked as favourite by the currently authenticated user
-    var isFavourite: Boolean?,
+    @SerialName("isFavourite") var isFavourite: Boolean?,
 
     // The amount of user's who have favourited the studio
-    var favourites: Int?,
+    @SerialName("favourites") var favourites: Int?,
 )
 
+@Serializable
 data class StudioConnection(
-    //var edges: List<StudioEdge>?,
+    //@SerialName("edges") var edges: List<StudioEdge>?,
 
-    var nodes: List<Studio>?,
+    @SerialName("nodes") var nodes: List<Studio>?,
 
     // The pagination information
-    //var pageInfo: PageInfo?,
+    //@SerialName("pageInfo") var pageInfo: PageInfo?,
 )

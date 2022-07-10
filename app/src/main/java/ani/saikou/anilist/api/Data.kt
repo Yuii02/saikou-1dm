@@ -1,32 +1,40 @@
 package ani.saikou.anilist.api
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 class Query{
-    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Serializable
     data class Viewer(
+        @SerialName("data")
         val data : Data?
     ){
+        @Serializable
         data class Data(
-            @JsonProperty("Viewer")
+            @SerialName("Viewer")
             val user: ani.saikou.anilist.api.User?
         )
     }
+    @Serializable
     data class Media(
+        @SerialName("data")
         val data :  Data?
     ){
+        @Serializable
         data class Data(
-            @JsonProperty("Media")
+            @SerialName("Media")
             val media: ani.saikou.anilist.api.Media?
         )
     }
 
+    @Serializable
     data class Page(
+        @SerialName("data")
         val data : Data?
     ){
+        @Serializable
         data class Data(
-            @JsonProperty("Page")
+            @SerialName("Page")
             val page : ani.saikou.anilist.api.Page?
         )
     }
@@ -38,20 +46,26 @@ class Query{
 //        )
 //    }
 
+    @Serializable
     data class Character(
+        @SerialName("data")
         val data :  Data?
     ){
+
+        @Serializable
         data class Data(
-            @JsonProperty("Character")
+            @SerialName("Character")
             val character: ani.saikou.anilist.api.Character?
         )
     }
 
     data class Studio(
+        @SerialName("data")
         val data: Data?
     ){
+        @Serializable
         data class Data(
-            @JsonProperty("Studio")
+            @SerialName("Studio")
             val studio: ani.saikou.anilist.api.Studio?
         )
     }
@@ -64,38 +78,50 @@ class Query{
 //        )
 //    }
 
+    @Serializable
     data class MediaListCollection(
+        @SerialName("data")
         val data : Data?
     ){
+        @Serializable
         data class Data(
-            @JsonProperty("MediaListCollection")
+            @SerialName("MediaListCollection")
             val mediaListCollection: ani.saikou.anilist.api.MediaListCollection?
         )
     }
 
+    @Serializable
     data class GenreCollection(
+        @SerialName("data")
         val data: Data
     ){
+        @Serializable
         data class Data(
-            @JsonProperty("GenreCollection")
+            @SerialName("GenreCollection")
             val genreCollection: List<String>?
         )
     }
 
+    @Serializable
     data class MediaTagCollection(
+        @SerialName("data")
         val data: Data
     ){
+        @Serializable
         data class Data(
-            @JsonProperty("MediaTagCollection")
+            @SerialName("MediaTagCollection")
             val mediaTagCollection: List<MediaTag>?
         )
     }
 
+    @Serializable
     data class User(
+        @SerialName("data")
         val data: Data
     ){
+        @Serializable
         data class Data(
-            @JsonProperty("User")
+            @SerialName("User")
             val user: ani.saikou.anilist.api.User?
         )
     }

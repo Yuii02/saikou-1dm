@@ -3,14 +3,16 @@ package ani.saikou.others
 import ani.saikou.client
 import ani.saikou.parsers.ShowResponse
 import ani.saikou.tryWithSuspend
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 object MalSyncBackup {
+    @Serializable
     data class MalBackUpSync(
-        @JsonProperty("Pages")
-        val pages: Map<String, Map<String, Page>>? = null
+        @SerialName("Pages") val pages: Map<String, Map<String, Page>>? = null
     )
 
+    @Serializable
     data class Page(
         val identifier: String,
         val title: String,

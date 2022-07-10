@@ -14,12 +14,13 @@ import androidx.core.content.FileProvider
 import androidx.core.content.getSystemService
 import androidx.fragment.app.FragmentActivity
 import ani.saikou.*
-import com.fasterxml.jackson.annotation.JsonProperty
 import io.noties.markwon.Markwon
 import io.noties.markwon.SoftBreakAddsNewLinePlugin
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import java.io.File
 
 object AppUpdater {
@@ -159,11 +160,13 @@ object AppUpdater {
             logError(e)
         }
     }
+    @Serializable
     data class GithubResponse (
         val assets: List<Asset>? = null
     ) {
+        @Serializable
         data class Asset(
-            @JsonProperty("browser_download_url")
+            @SerialName("browser_download_url")
             val browserDownloadURL: String
         )
     }

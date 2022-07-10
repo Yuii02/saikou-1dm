@@ -22,7 +22,6 @@
             android:adjustViewBounds="true"
             android:focusable="false"
             android:scaleType="fitCenter"
-            android:visibility="gone"
             tools:ignore="ContentDescription,ImageContrastCheck"
             tools:src="@tools:sample/backgrounds/scenic[0]" />
 

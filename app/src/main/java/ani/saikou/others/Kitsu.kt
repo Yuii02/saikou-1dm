@@ -6,7 +6,8 @@ import ani.saikou.client
 import ani.saikou.logger
 import ani.saikou.media.Media
 import ani.saikou.tryWithSuspend
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 object Kitsu {
     private suspend fun getKitsuData(query: String): KitsuResponse? {
@@ -63,44 +64,45 @@ query {
         }.toMap()
     }
 
+    @Serializable
     private data class KitsuResponse(
-        val data: Data? = null
+        @SerialName("data") val data: Data? = null
     ) {
+        @Serializable
         data class Data (
-            val lookupMapping: LookupMapping? = null
+            @SerialName("lookupMapping") val lookupMapping: LookupMapping? = null
         )
-
+        @Serializable
         data class LookupMapping (
-            val id: String? = null,
-            val episodes: Episodes? = null
+            @SerialName("id") val id: String? = null,
+            @SerialName("episodes") val episodes: Episodes? = null
         )
-
+        @Serializable
         data class Episodes (
-            val nodes: List<Node?>? = null
+            @SerialName("nodes") val nodes: List<Node?>? = null
         )
-
+        @Serializable
         data class Node (
-            @JsonProperty("number")
-            val num: Long? = null,
-            val titles: Titles? = null,
-            val description: Description? = null,
-            val thumbnail: Thumbnail? = null
+            @SerialName("number") val num: Long? = null,
+            @SerialName("titles") val titles: Titles? = null,
+            @SerialName("description") val description: Description? = null,
+            @SerialName("thumbnail") val thumbnail: Thumbnail? = null
         )
-
+        @Serializable
         data class Description (
-            val en: String? = null
+            @SerialName("en") val en: String? = null
         )
-
+        @Serializable
         data class Thumbnail (
-            val original: Original? = null
+            @SerialName("original") val original: Original? = null
         )
-
+        @Serializable
         data class Original (
-            val url: String? = null
+            @SerialName("url") val url: String? = null
         )
-
+        @Serializable
         data class Titles (
-            val canonical: String? = null
+            @SerialName("canonical") val canonical: String? = null
         )
 
     }

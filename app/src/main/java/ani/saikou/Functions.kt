@@ -44,7 +44,7 @@ import ani.saikou.anilist.api.FuzzyDate
 import ani.saikou.anime.Episode
 import ani.saikou.databinding.ItemCountDownBinding
 import ani.saikou.media.Media
-import ani.saikou.others.DisableFirebase
+import ani.saikou.others.DisabledReports
 import ani.saikou.parsers.ShowResponse
 import ani.saikou.settings.UserInterfaceSettings
 import com.bumptech.glide.Glide
@@ -57,6 +57,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.internal.ViewUtils
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -475,7 +477,7 @@ class App : MultiDexApplication() {
         super.onCreate()
         registerActivityLifecycleCallbacks(mFTActivityLifecycleCallbacks)
 
-        DisableFirebase.handle()
+        Firebase.crashlytics.setCrashlyticsCollectionEnabled(!DisabledReports)
         initializeNetwork(baseContext)
 
     }
@@ -491,7 +493,9 @@ class App : MultiDexApplication() {
 class FTActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
     var currentActivity: Activity? = null
     override fun onActivityCreated(p0: Activity, p1: Bundle?) {}
-    override fun onActivityStarted(p0: Activity) {}
+    override fun onActivityStarted(p0: Activity) {
+        currentActivity = p0
+    }
     override fun onActivityResumed(p0: Activity) {
         currentActivity = p0
     }

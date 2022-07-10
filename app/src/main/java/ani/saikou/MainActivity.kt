@@ -22,12 +22,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import ani.saikou.anilist.Anilist
 import ani.saikou.anilist.AnilistHomeViewModel
-import ani.saikou.anilist.api.Query
 import ani.saikou.databinding.ActivityMainBinding
 import ani.saikou.databinding.SplashScreenBinding
 import ani.saikou.media.MediaDetailsActivity
 import ani.saikou.settings.UserInterfaceSettings
-import com.fasterxml.jackson.module.kotlin.readValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -51,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         binding.root.isMotionEventSplittingEnabled = false
 
         lifecycleScope.launchWhenStarted {
-            launch(Dispatchers.IO){ mapper.readValue<Query.Viewer>("{}") }
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 val splash = SplashScreenBinding.inflate(layoutInflater)
                 binding.root.addView(splash.root)
@@ -175,7 +172,6 @@ class MainActivity : AppCompatActivity() {
         }
         this.doubleBackToExitPressedOnce = true
         toastString("Please perform BACK again to Exit")
-
         Handler(Looper.getMainLooper()).postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
     }
 

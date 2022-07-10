@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -223,11 +224,13 @@ class SelectorDialogFragment : BottomSheetDialogFragment() {
                 binding.urlDownload.setSafeOnClickListener {
                     media!!.anime!!.episodes!![media!!.anime!!.selectedEpisode!!]!!.selectedServer = extractor.server.name
                     media!!.anime!!.episodes!![media!!.anime!!.selectedEpisode!!]!!.selectedVideo = position
+                    binding.urlDownload.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                     download(
                         requireActivity(),
                         media!!.anime!!.episodes!![media!!.anime!!.selectedEpisode!!]!!,
                         media!!.userPreferredName
                     )
+                    dismiss()
                 }
             }
             else {

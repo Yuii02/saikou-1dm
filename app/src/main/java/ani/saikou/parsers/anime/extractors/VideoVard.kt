@@ -9,6 +9,8 @@ import ani.saikou.parsers.VideoExtractor
 import ani.saikou.parsers.VideoServer
 import ani.saikou.tryWithSuspend
 import kotlinx.coroutines.delay
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import java.math.BigInteger
 
 class VideoVard(override val server: VideoServer, private val download:Boolean=false) : VideoExtractor() {
@@ -36,7 +38,7 @@ class VideoVard(override val server: VideoServer, private val download:Boolean=f
                         "hash" to (res.hash?:return@tryWithSuspend null),
                         "version" to res.version!!,
                     )
-                ).parsed<SetupResponse>()
+                ).also { if(!it.text.startsWith("{")) throw Exception("Video Not Found") }.parsed<SetupResponse>()
                 val mp4 = FileUrl(decode(setup.link!!, setup.seed), headers)
                 Video(null, false, mp4, getSize(mp4))
             }
@@ -51,8 +53,8 @@ class VideoVard(override val server: VideoServer, private val download:Boolean=f
                         "file_code" to id,
                         "hash" to (hash.hash ?: return@tryWithSuspend null)
                     )
-                ).parsed<SetupResponse>()
-                val m3u8 = FileUrl(decode(res.src?:return@tryWithSuspend null, res.seed), headers)
+                ).also { if(!it.text.startsWith("{")) throw Exception("Video Not Found") }.parsed<SetupResponse>()
+                val m3u8 = FileUrl(decode(res.src!!, res.seed), headers)
                 Video(null, true, m3u8)
             }
         }
@@ -273,16 +275,18 @@ class VideoVard(override val server: VideoServer, private val download:Boolean=f
             return if(input.reversed()[3].isDigit()) input
             else input.dropLast(4)
         }
-
-        private data class HashResponse(
-            val hash: String? = null,
-            val version:String? = null
-        )
-
-        private data class SetupResponse(
-            val seed: String,
-            val src: String?=null,
-            val link:String?=null
-        )
     }
+
+    @Serializable
+    private data class HashResponse(
+        @SerialName("hash") val hash: String? = null,
+        @SerialName("version") val version:String? = null
+    )
+
+    @Serializable
+    private data class SetupResponse(
+        @SerialName("seed") val seed: String,
+        @SerialName("src") val src: String?=null,
+        @SerialName("link") val link:String?=null
+    )
 }

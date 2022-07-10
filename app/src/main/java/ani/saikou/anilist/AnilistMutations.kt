@@ -32,12 +32,12 @@ class AnilistMutations {
             ${if (score != null) ""","scoreRaw":$score""" else ""}
             ${if (status != null) ""","status":"$status"""" else ""}
             }""".replace("\n", "").replace("""    """, "")
-        executeQuery<Any>(query, variables)
+        executeQuery<String>(query, variables)
     }
 
     suspend fun deleteList(listId: Int) {
         val query = "mutation(${"$"}id:Int){DeleteMediaListEntry(id:${"$"}id){deleted}}"
         val variables = """{"id":"$listId"}"""
-        executeQuery<Any>(query, variables)
+        executeQuery<String>(query, variables)
     }
 }

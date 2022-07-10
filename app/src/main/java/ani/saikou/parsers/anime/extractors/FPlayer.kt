@@ -7,7 +7,7 @@ import ani.saikou.parsers.Video
 import ani.saikou.parsers.VideoContainer
 import ani.saikou.parsers.VideoExtractor
 import ani.saikou.parsers.VideoServer
-import com.fasterxml.jackson.databind.exc.MismatchedInputException
+import kotlinx.serialization.Serializable
 
 class FPlayer(override val server: VideoServer) : VideoExtractor() {
 
@@ -27,15 +27,17 @@ class FPlayer(override val server: VideoServer) : VideoExtractor() {
                 }?: listOf())
             }
 
-        } catch (e: MismatchedInputException) {}
+        } catch (e: Exception) {}
         return VideoContainer(listOf())
     }
 
+    @Serializable
     private data class Data(
         val file: String,
         val label: String
     )
 
+    @Serializable
     private data class Json(
         val success: Boolean,
         val data: List<Data>?

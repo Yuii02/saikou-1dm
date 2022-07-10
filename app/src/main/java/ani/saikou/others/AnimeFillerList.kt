@@ -3,7 +3,8 @@ package ani.saikou.others
 import ani.saikou.anime.Episode
 import ani.saikou.client
 import ani.saikou.tryWithSuspend
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 object AnimeFillerList {
     suspend fun getFillers(malId: Int): Map<String, Episode>? {
@@ -19,22 +20,25 @@ object AnimeFillerList {
             } else null
         }
     }
+
+    @Serializable
     data class AnimeFillerListValue (
-        @JsonProperty("MAL-id")
+        @SerialName("MAL-id")
         val malID: Int? = null,
 
-        @JsonProperty("Anilist-id")
+        @SerialName("Anilist-id")
         val anilistID: Int? = null,
 
         val episodes: List<AFLEpisode>? = null
     )
 
+    @Serializable
     data class AFLEpisode (
         val number: Int? = null,
         val title: String? = null,
         val desc: String? = null,
         val filler: String? = null,
-        @JsonProperty("filler-bool") val fillerBool : Boolean?=null,
+        @SerialName("filler-bool") val fillerBool : Boolean?=null,
         val airDate: String? = null
     )
 }

@@ -38,12 +38,12 @@ abstract class VideoExtractor : Serializable {
      *
      * Useful for Extractor that require Polling
      * **/
-    open fun onVideoPlayed(video: Video?) {}
+    open suspend fun onVideoPlayed(video: Video?) {}
 
     /**
      * Called when a particular video has been stopped playing
      **/
-    open fun onVideoStopped(video: Video?) {}
+    open suspend fun onVideoStopped(video: Video?) {}
 }
 
 /**

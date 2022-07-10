@@ -1,85 +1,90 @@
 package ani.saikou.anilist.api
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Staff(
     // The id of the staff member
-    var id: Int,
+    @SerialName("id") var id: Int,
 
     // The names of the staff member
-    // var name: StaffName?,
+    // @SerialName("name") var name: StaffName?,
 
     // The primary language of the staff member. Current values: Japanese, English, Korean, Italian, Spanish, Portuguese, French, German, Hebrew, Hungarian, Chinese, Arabic, Filipino, Catalan, Finnish, Turkish, Dutch, Swedish, Thai, Tagalog, Malaysian, Indonesian, Vietnamese, Nepali, Hindi, Urdu
-    var languageV2: String?,
+    @SerialName("languageV2") var languageV2: String?,
 
     // The staff images
-    // var image: StaffImage?,
+    // @SerialName("image") var image: StaffImage?,
 
     // A general description of the staff member
-    var description: String?,
+    @SerialName("description") var description: String?,
 
     // The person's primary occupations
-    var primaryOccupations: List<String>?,
+    @SerialName("primaryOccupations") var primaryOccupations: List<String>?,
 
     // The staff's gender. Usually Male, Female, or Non-binary but can be any string.
-    var gender: String?,
+    @SerialName("gender") var gender: String?,
 
-    var dateOfBirth: FuzzyDate?,
+    @SerialName("dateOfBirth") var dateOfBirth: FuzzyDate?,
 
-    var dateOfDeath: FuzzyDate?,
+    @SerialName("dateOfDeath") var dateOfDeath: FuzzyDate?,
 
     // The person's age in years
-    var age: Int?,
+    @SerialName("age") var age: Int?,
 
     // [startYear, endYear] (If the 2nd value is not present staff is still active)
-    var yearsActive: List<Int>?,
+    @SerialName("yearsActive") var yearsActive: List<Int>?,
 
     // The persons birthplace or hometown
-    var homeTown: String?,
+    @SerialName("homeTown") var homeTown: String?,
 
     // The persons blood type
-    var bloodType: String?,
+    @SerialName("bloodType") var bloodType: String?,
 
     // If the staff member is marked as favourite by the currently authenticated user
-    var isFavourite: Boolean?,
+    @SerialName("isFavourite") var isFavourite: Boolean?,
 
     // If the staff member is blocked from being added to favourites
-    var isFavouriteBlocked: Boolean?,
+    @SerialName("isFavouriteBlocked") var isFavouriteBlocked: Boolean?,
 
     // The url for the staff page on the AniList website
-    var siteUrl: String?,
+    @SerialName("siteUrl") var siteUrl: String?,
 
     // Media where the staff member has a production role
-    var staffMedia: MediaConnection?,
+    @SerialName("staffMedia") var staffMedia: MediaConnection?,
 
     // Characters voiced by the actor
-    var characters: CharacterConnection?,
+    @SerialName("characters") var characters: CharacterConnection?,
 
     // Media the actor voiced characters in. (Same data as characters with media as node instead of characters)
-    var characterMedia: MediaConnection?,
+    @SerialName("characterMedia") var characterMedia: MediaConnection?,
 
     // Staff member that the submission is referencing
-    var staff: Staff?,
+    @SerialName("staff") var staff: Staff?,
 
     // Submitter for the submission
-    var submitter: User?,
+    @SerialName("submitter") var submitter: User?,
 
     // Status of the submission
-    var submissionStatus: Int?,
+    @SerialName("submissionStatus") var submissionStatus: Int?,
 
     // Inner details of submission status
-    var submissionNotes: String?,
+    @SerialName("submissionNotes") var submissionNotes: String?,
 
     // The amount of user's who have favourited the staff member
-    var favourites: Int?,
+    @SerialName("favourites") var favourites: Int?,
 
     // Notes for site moderators
-    var modNotes: String?,
+    @SerialName("modNotes") var modNotes: String?,
 )
 
+@Serializable
 data class StaffConnection(
-    // var edges: List<StaffEdge>?,
+    // @SerialName("edges") var edges: List<StaffEdge>?,
 
-    var nodes: List<Staff>?,
+    @SerialName("nodes") var nodes: List<Staff>?,
 
     // The pagination information
-    // var pageInfo: PageInfo?,
+    // @SerialName("pageInfo") var pageInfo: PageInfo?,
 )

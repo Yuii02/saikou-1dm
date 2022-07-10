@@ -3,6 +3,8 @@ package ani.saikou.parsers.anime
 import ani.saikou.FileUrl
 import ani.saikou.client
 import ani.saikou.parsers.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 class AnimePahe : AnimeParser() {
 
@@ -34,7 +36,7 @@ class AnimePahe : AnimeParser() {
         return servers
     }
 
-    override suspend fun getVideoExtractor(server: VideoServer): VideoExtractor? = AnimePaheExtractor(server)
+    override suspend fun getVideoExtractor(server: VideoServer): VideoExtractor = AnimePaheExtractor(server)
 
     class AnimePaheExtractor(override val server: VideoServer): VideoExtractor() {
 
@@ -44,7 +46,7 @@ class AnimePahe : AnimeParser() {
             val resp = client.get(server.embed.url, referer = "https://animepahe.com/").text
             val obfUrl = kwikRe.find(resp, 0)?.groupValues?.get(1)
             val i = obfUrl?.split('|')?.reversed()!!
-            val m3u8Url = "${i[0]}://${i[1]}-${i[2]}.${i[3]}.${i[4]}.${i[5]}/${i[6]}/${i[7]}/${i[8]}/${i[9]}.${i[10]}"  // :pepega:
+            val m3u8Url = "${i[0]}://${i[1]}-${i[2]}.${i[3]}.${i[4]}.${i[5]}/${i[6]}/${i[7]}/${i[8]}/${i[9]}.${i[10]}"
             return VideoContainer(
                 videos = listOf(Video(quality = null, isM3U8 = true,
                     url = FileUrl(m3u8Url, mapOf("Referer" to "https://kwik.cx/", "Accept" to "*/*"))))
@@ -69,35 +71,42 @@ class AnimePahe : AnimeParser() {
         return episodes
     }
 
-}
 
+    @Serializable
+    private data class SearchQuery(@SerialName("data") val data: List<SearchQueryData>) {
 
-// --- dataclasses ---
+        @Serializable
+        data class SearchQueryData(
+            @SerialName("slug") val slug: String,
+            @SerialName("title") val title: String,
+            @SerialName("poster") val poster: String,
+            @SerialName("session") val session: String,
+        )
+    }
 
-private data class SearchQuery(val data: List<SearchQueryData>) {
-    data class SearchQueryData(
-        val slug: String,
-        val title: String,
-        val poster: String,
-        val session: String,
-    )
-}
+    @Serializable
+    private data class ReleaseRouteResponse(
+        @SerialName("last_page") val last_page: Int,
+        @SerialName("data") val data: List<ReleaseResponse>?
+    ) {
 
-private data class ReleaseRouteResponse(
-    val last_page: Int,
-    val data: List<ReleaseResponse>?
-) {
-    data class ReleaseResponse(
-        val episode: Int,
-        val anime_id: Int,
-        val title: String,
-        val snapshot: String,
-        val session: String,
-    )
-}
+        @Serializable
+        data class ReleaseResponse(
+            @SerialName("episode") val episode: Int,
+            @SerialName("anime_id") val anime_id: Int,
+            @SerialName("title") val title: String,
+            @SerialName("snapshot") val snapshot: String,
+            @SerialName("session") val session: String,
+        )
+    }
 
-private data class KwikUrls(val data: List<Map<String, Url>>) {
-    data class Url(
-        val kwik: String?,
-    )
+    @Serializable
+    private data class KwikUrls(@SerialName("data") val data: List<Map<String, Url>>) {
+
+        @Serializable
+        data class Url(
+            @SerialName("kwik") val kwik: String?,
+        )
+    }
+
 }

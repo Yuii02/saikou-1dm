@@ -6,6 +6,8 @@ import ani.saikou.parsers.MangaChapter
 import ani.saikou.parsers.MangaImage
 import ani.saikou.parsers.MangaParser
 import ani.saikou.parsers.ShowResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 class NHentai : MangaParser() {
 
@@ -51,8 +53,9 @@ class NHentai : MangaParser() {
             )
         } else {
             val finalQuery = "$query language:english"
-            val json = client.get("$hostUrl/api/galleries/search?query=${encode(finalQuery)}").parsed<SearchResponse>()
-            json.result.map {
+            val resp = client.get("$hostUrl/api/galleries/search?query=${encode(finalQuery)}")
+            if (!resp.text.startsWith("{")) throw Exception("NHentai Added CloudFlare Protection, Please use a different Source.")
+            resp.parsed<SearchResponse>().result.map {
                 ShowResponse(
                     name = it.title.pretty,
                     link = "$hostUrl/g/${it.id}",
@@ -73,33 +76,45 @@ class NHentai : MangaParser() {
         }
     }
 
+    @Serializable
     private data class SearchResponse(
-        val result: List<Result>,
+        @SerialName("result") val result: List<Result>,
     ) {
+
+        @Serializable
         data class Result(
-            val id: Int,
-            val media_id: Int,
-            val title: Title,
+            @SerialName("id") val id: Int,
+            @SerialName("media_id") val media_id: Int,
+            @SerialName("title") val title: Title,
         ) {
+
+            @Serializable
             data class Title(
-                val english: String,
-                val japanese: String,
-                val pretty: String
+                @SerialName("english") val english: String,
+                @SerialName("japanese") val japanese: String,
+                @SerialName("pretty") val pretty: String
             )
         }
     }
 
+    @Serializable
     private data class MangaResponse(
-        val media_id: Int,
-        val title: Title,
-        val images: Pages
+        @SerialName("media_id") val media_id: Int,
+        @SerialName("title") val title: Title,
+        @SerialName("images") val images: Pages
     ) {
-        data class Title(val pretty: String)
-        data class Pages(val pages: List<Page>) {
+
+        @Serializable
+        data class Title(@SerialName("pretty") val pretty: String)
+
+        @Serializable
+        data class Pages(@SerialName("pages") val pages: List<Page>) {
+
+            @Serializable
             data class Page(
-                val t: String, // extension
-                val w: Int,    // width
-                val h: Int     // height
+                @SerialName("t") val t: String, // extension
+                @SerialName("w") val w: Int,    // width
+                @SerialName("h") val h: Int     // height
             )
         }
     }

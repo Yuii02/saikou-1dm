@@ -1,13 +1,15 @@
 package ani.saikou.anilist.api
 
+import kotlinx.serialization.SerialName
 import java.io.Serializable
 import java.text.DateFormatSymbols
 import java.util.*
 
+@kotlinx.serialization.Serializable
 data class FuzzyDate(
-    val year: Int? = null,
-    val month: Int? = null,
-    val day: Int? = null,
+    @SerialName("year") val year: Int? = null,
+    @SerialName("month") val month: Int? = null,
+    @SerialName("day") val day: Int? = null,
 ) : Serializable {
     override fun toString(): String {
         val a = if (month != null) DateFormatSymbols().months[month - 1] else ""

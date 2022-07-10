@@ -8,6 +8,8 @@ import ani.saikou.findBetween
 import ani.saikou.okHttpClient
 import ani.saikou.parsers.*
 import ani.saikou.parsers.anime.extractors.RapidCloud.SocketHandler.webSocket
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import okhttp3.*
 import java.util.concurrent.*
 
@@ -97,19 +99,26 @@ class RapidCloud(override val server: VideoServer) : VideoExtractor() {
         return sId
     }
 
-    override fun onVideoStopped(video: Video?) {
+    override suspend fun onVideoPlayed(video: Video?) {
+        webSocket?.send("3")
+    }
+
+    override suspend fun onVideoStopped(video: Video?) {
         webSocket?.close(4969, "Just got Saikou-ed")
     }
 
+    @Serializable
     private data class SourceResponse(
-        val sources: List<Source>? = null,
-        val sourcesBackup: List<Source>? = null,
-        val tracks: List<Source>? = null
+        @SerialName("sources") val sources: List<Source>? = null,
+        @SerialName("sourcesBackup") val sourcesBackup: List<Source>? = null,
+        @SerialName("tracks") val tracks: List<Source>? = null
     ) {
+
+        @Serializable
         data class Source(
-            val file: String? = null,
-            val label: String? = null,
-            val kind: String? = null
+            @SerialName("file") val file: String? = null,
+            @SerialName("label") val label: String? = null,
+            @SerialName("kind") val kind: String? = null
         )
     }
 

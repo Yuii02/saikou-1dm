@@ -7,8 +7,8 @@ import ani.saikou.parsers.*
 import ani.saikou.parsers.anime.extractors.FPlayer
 import ani.saikou.parsers.anime.extractors.GogoCDN
 import ani.saikou.parsers.anime.extractors.StreamSB
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.module.kotlin.readValue
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import java.text.DecimalFormat
@@ -159,7 +159,7 @@ class AllAnime : AnimeParser() {
             val linkList = mutableListOf<String>()
             if (rawResponse.code < 400) {
                 val response = rawResponse.text
-                mapper.readValue<ApiSourceResponse>(response).links.forEach {
+                Mapper.parse<ApiSourceResponse>(response).links.forEach {
                     // Avoid languages other than english when multiple urls are provided
                     val matchesLanguagePattern = languageRegex.find(it.resolutionStr)
                     val language = matchesLanguagePattern?.groupValues?.get(1)
@@ -209,79 +209,91 @@ class AllAnime : AnimeParser() {
         }
     }
 
-    private data class Query(var data: Data?) {
+    @Serializable
+    private data class Query(@SerialName("data") var data: Data?) {
+
+        @Serializable
         data class Data(
-            val shows: ShowsConnection?,
-            val show: Show?,
-            val showsWithIds: List<Show>?,
-            val episodeInfos: List<EpisodeInfo>?,
-            val episode: AllAnimeEpisode?,
+            @SerialName("shows") val shows: ShowsConnection?,
+            @SerialName("show") val show: Show?,
+            @SerialName("showsWithIds") val showsWithIds: List<Show>?,
+            @SerialName("episodeInfos") val episodeInfos: List<EpisodeInfo>?,
+            @SerialName("episode") val episode: AllAnimeEpisode?,
         )
 
+        @Serializable
         data class ShowsConnection(
-            val edges: List<Show>
+            @SerialName("edges") val edges: List<Show>
         )
 
+        @Serializable
         data class Show(
-            @JsonProperty("_id")
-            val id: String,
-            val name: String,
-            val englishName: String?,
-            val nativeName: String?,
-            val thumbnail: String?,
-            val availableEpisodes: AvailableEpisodes,
-            val altNames: List<String>?
+            @SerialName("_id") val id: String,
+            @SerialName("name") val name: String,
+            @SerialName("englishName") val englishName: String?,
+            @SerialName("nativeName") val nativeName: String?,
+            @SerialName("thumbnail") val thumbnail: String?,
+            @SerialName("availableEpisodes") val availableEpisodes: AvailableEpisodes,
+            @SerialName("altNames") val altNames: List<String>?
         )
 
+        @Serializable
         data class AvailableEpisodes(
-            val sub: Int,
-            val dub: Int,
-            // val raw: Int,
+            @SerialName("sub") val sub: Int,
+            @SerialName("dub") val dub: Int,
+            // @SerialName("raw") val raw: Int,
         )
 
-        data class LastEpisodeInfos(
-            val sub: LastEpisodeInfo?,
-            val dub: LastEpisodeInfo?,
-        )
+//        data class LastEpisodeInfos(
+//            @SerialName("sub") val sub: LastEpisodeInfo?,
+//            @SerialName("dub") val dub: LastEpisodeInfo?,
+//        )
+//
+//        data class LastEpisodeInfo(
+//            @SerialName("episodeString") val episodeString: String?,
+//            @SerialName("notes") val notes: String?
+//        )
 
-        data class LastEpisodeInfo(
-            val episodeString: String?,
-            val notes: String?
-        )
-
+        @Serializable
         data class AllAnimeEpisode(
-            var sourceUrls: List<SourceUrl>
+            @SerialName("sourceUrls") var sourceUrls: List<SourceUrl>
         )
 
+        @Serializable
         data class SourceUrl(
-            val sourceUrl: String,
-            val sourceName: String,
-            val priority: String
+            @SerialName("sourceUrl") val sourceUrl: String,
+            @SerialName("sourceName") val sourceName: String,
+            @SerialName("priority") val priority: String
         )
     }
 
+    @Serializable
     private data class EpisodeInfo(
         // Episode "numbers" can have decimal values, hence float
-        val episodeIdNum: Float,
-        val notes: String?,
-        val thumbnails: List<String>?,
-        val vidInforssub: VidInfo?,
-        val vidInforsdub: VidInfo?,
+        @SerialName("episodeIdNum") val episodeIdNum: Float,
+        @SerialName("notes") val notes: String?,
+        @SerialName("thumbnails") val thumbnails: List<String>?,
+        @SerialName("vidInforssub") val vidInforssub: VidInfo?,
+        @SerialName("vidInforsdub") val vidInforsdub: VidInfo?,
     ) {
+        @Serializable
         data class VidInfo(
-            // val vidPath
-            val vidResolution: Int?,
-            val vidSize: Double?,
+            // @SerialName("vidPath") val vidPath
+            @SerialName("vidResolution") val vidResolution: Int?,
+            @SerialName("vidSize") val vidSize: Double?,
         )
     }
 
-    private data class ApiSourceResponse(val links: List<ApiLink>) {
+    @Serializable
+    private data class ApiSourceResponse(@SerialName("links") val links: List<ApiLink>) {
+
+        @Serializable
         data class ApiLink(
-            val link: String?,
-            val src: String?,
-            val hls: Boolean?,
-            val mp4: Boolean?,
-            val resolutionStr: String,
+            @SerialName("link") val link: String?,
+            @SerialName("src") val src: String?,
+            @SerialName("hls") val hls: Boolean?,
+            @SerialName("mp4") val mp4: Boolean?,
+            @SerialName("resolutionStr") val resolutionStr: String,
         )
     }
 

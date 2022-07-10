@@ -49,11 +49,11 @@ import ani.saikou.settings.PlayerSettings
 import ani.saikou.settings.UserInterfaceSettings
 import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.C.TRACK_TYPE_VIDEO
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.CaptionStyleCompat
 import com.google.android.exoplayer2.ui.CaptionStyleCompat.EDGE_TYPE_OUTLINE
@@ -339,13 +339,13 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
                     checkNotch()
                 }
         }
-        playerView.setControllerVisibilityListener {
-            if (it == View.GONE) {
+        playerView.setControllerVisibilityListener(StyledPlayerView.ControllerVisibilityListener { visibility ->
+            if (visibility == View.GONE) {
                 hideSystemBars()
                 brightnessRunnable.run()
                 volumeRunnable.run()
             }
-        }
+        })
         val overshoot = AnimationUtils.loadInterpolator(this, R.anim.over_shoot)
         val controllerDuration = (uiSettings.animationSpeed * 200).toLong()
         fun handleController() {
@@ -760,13 +760,17 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
         set.add(media.id)
         saveData("continue_ANIME", set, this)
 
-        extractor?.onVideoStopped(video)
+        lifecycleScope.launch(Dispatchers.IO){
+            extractor?.onVideoStopped(video)
+        }
 
         extractor = episode.extractors?.find { it.server.name == episode.selectedServer } ?: return
         video = extractor?.videos?.getOrNull(episode.selectedVideo) ?: return
         subtitle = extractor?.subtitles?.find { it.language == "English" }
 
-        extractor?.onVideoPlayed(video)
+        lifecycleScope.launch(Dispatchers.IO){
+            extractor?.onVideoPlayed(video)
+        }
 
         val but = playerView.findViewById<ImageButton>(R.id.exo_download)
         if (video?.isM3U8 == false) {
@@ -1007,12 +1011,12 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
         }, 2500)
     }
 
-    override fun onTracksInfoChanged(tracksInfo: TracksInfo) {
-        if (tracksInfo.trackGroupInfos.size <= 2) exoQuality.visibility = View.GONE
+    override fun onTracksChanged(tracks: Tracks) {
+        if (tracks.groups.size <= 2) exoQuality.visibility = View.GONE
         else {
             exoQuality.visibility = View.VISIBLE
             exoQuality.setOnClickListener {
-                initPopupQuality(trackSelector)?.show()
+                initPopupQuality().show()
             }
         }
     }
@@ -1085,7 +1089,9 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
     override fun onDestroy() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
 
-        extractor?.onVideoStopped(video)
+        lifecycleScope.launch(Dispatchers.IO) {
+            extractor?.onVideoStopped(video)
+        }
 
         if (isInitialized) {
             updateAniProgress()
@@ -1097,21 +1103,10 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
     }
 
     // QUALITY SELECTOR
-    private fun initPopupQuality(trackSelector: DefaultTrackSelector): Dialog? {
-        val mappedTrackInfo = trackSelector.currentMappedTrackInfo ?: return null
-        var videoRenderer: Int? = null
-
-        fun isVideoRenderer(mappedTrackInfo: MappingTrackSelector.MappedTrackInfo, rendererIndex: Int): Boolean {
-            if (mappedTrackInfo.getTrackGroups(rendererIndex).length == 0) return false
-            return C.TRACK_TYPE_VIDEO == mappedTrackInfo.getRendererType(rendererIndex)
-        }
-
-        for (i in 0 until mappedTrackInfo.rendererCount)
-            if (isVideoRenderer(mappedTrackInfo, i))
-                videoRenderer = i
+    private fun initPopupQuality(): Dialog {
 
         val trackSelectionDialogBuilder =
-            TrackSelectionDialogBuilder(this, "Available Qualities", trackSelector, videoRenderer ?: return null)
+            TrackSelectionDialogBuilder(this, "Available Qualities", exoPlayer, TRACK_TYPE_VIDEO)
         trackSelectionDialogBuilder.setTheme(R.style.DialogTheme)
         trackSelectionDialogBuilder.setTrackNameProvider {
             if (it.frameRate > 0f) it.height.toString() + "p" else it.height.toString() + "p (fps : N/A)"
@@ -1210,7 +1205,9 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
         }
     }
 
-    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {
+    @Suppress("DEPRECATION")
+    @Deprecated("Deprecated in Java")
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
         playerView.useController = !isInPictureInPictureMode
         if (isInPictureInPictureMode) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
@@ -1222,7 +1219,7 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
             saveData("${media.id}_${episode.number}", exoPlayer.currentPosition, this)
             exoPlayer.play()
         }
-        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode)
     }
 
 }

@@ -1,9 +1,9 @@
 package ani.saikou.settings
 
-import android.os.Build.*
-import android.os.Build.VERSION.*
 import android.content.Intent
 import android.graphics.drawable.Animatable
+import android.os.Build.*
+import android.os.Build.VERSION.*
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -43,11 +43,9 @@ class SettingsActivity : AppCompatActivity() {
             }
             val info = """
 Saikou Version: ${BuildConfig.VERSION_NAME}
-Brand: $BRAND
-Board: $BOARD
+Device: $BRAND $DEVICE
 Architecture: ${getArch()}
-Bootloader: $BOOTLOADER
-OS Version: $CODENAME $RELEASE (SDK v${SDK_INT})
+OS Version: $CODENAME $RELEASE ($SDK_INT)
             """.trimIndent()
             copyToClipboard(info, false)
             toast("Copied device info")
