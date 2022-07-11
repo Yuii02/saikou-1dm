@@ -1,4 +1,4 @@
-# 1.2.0.17.1
+# 1.2.0.18
 - Fixed Serialization Problems
 - Fixed Kamyroll Episode Problem
 - AniMixPlay Source by @scrazzz (Not Tested)
