@@ -28,7 +28,7 @@ object AppUpdater {
         val repo = activity.getString(R.string.repo)
         tryWithSuspend {
             val md =
-                client.get("https://raw.githubusercontent.com/$repo/main/${if (!BuildConfig.DEBUG) "stable" else "beta"}.md").text
+                client.get("https://raw.githubusercontent.com/$repo/custom/${if (!BuildConfig.DEBUG) "stable" else "beta"}.md").text
 
             val version = md.substringAfter("# ").substringBefore("\n")
             logger("Git Version : $version")
