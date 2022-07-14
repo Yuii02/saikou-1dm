@@ -26,7 +26,6 @@ data class PlayerSettings(
     var skipTime: Int = 85,
     var cast: Boolean = false,
     var resize: Int = 0,
-
     var pip: Boolean = true,
     var alwaysMinimize: Boolean = false,
 ) : Serializable
