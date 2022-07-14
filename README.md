@@ -8,6 +8,10 @@
 
 As you can see, this is pretty much just my spin on Saikou with a few changes and tweaks here and there
 
+# **TODO**
+- 1DM Integration as toggle option
+  - Maybe a "Download Manager" button that gives a few choices
+
 # **Saikou**
 <p align="center">
    <a href="https://discord.gg/5TXAWTU5qr"><img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white"></a>
