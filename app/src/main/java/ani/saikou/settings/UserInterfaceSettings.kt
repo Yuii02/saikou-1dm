@@ -13,6 +13,7 @@ data class UserInterfaceSettings(
     var smallView: Boolean = true,
     var defaultStartUpTab: Int = 1,
     var homeLayoutShow: ArrayList<Boolean> = arrayListOf(true, false, true, false, true),
+    var downloadManager: Int = 0,
 
     //Animations
     var bannerAnimations: Boolean = true,

@@ -3,6 +3,7 @@ package ani.saikou.anime
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.HapticFeedbackConstants
@@ -21,6 +22,7 @@ import ani.saikou.databinding.ItemUrlBinding
 import ani.saikou.media.Media
 import ani.saikou.media.MediaDetailsViewModel
 import ani.saikou.parsers.VideoExtractor
+import ani.saikou.settings.UserInterfaceSettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,6 +40,7 @@ class SelectorDialogFragment : BottomSheetDialogFragment() {
     private var makeDefault = false
     private var selected: String? = null
     private var launch: Boolean? = null
+    private var uiSettings = UserInterfaceSettings()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -240,6 +243,15 @@ class SelectorDialogFragment : BottomSheetDialogFragment() {
 
         override fun getItemCount(): Int = extractor.videos.size
 
+        private fun isPackageInstalled(packageName: String, packageManager: PackageManager): Boolean {
+            return try {
+                packageManager.getPackageInfo(packageName, 0)
+                true
+            } catch (e: PackageManager.NameNotFoundException) {
+                false
+            }
+        }
+
         private inner class UrlViewHolder(val binding: ItemUrlBinding) : RecyclerView.ViewHolder(binding.root) {
             init {
                 itemView.setSafeOnClickListener {
@@ -254,13 +266,73 @@ class SelectorDialogFragment : BottomSheetDialogFragment() {
                 }
                 itemView.setOnLongClickListener {
                     val video = extractor.videos[bindingAdapterPosition]
-                    val intent= Intent(Intent.ACTION_VIEW).apply {
-                        setDataAndType(Uri.parse(video.url.url),"video/*")
+                    val episode = media!!.anime!!.episodes!![media!!.anime!!.selectedEpisode!!]!!
+                    // Here follows: the Download Manager Madness
+                    toast(uiSettings.downloadManager.toString())
+                    if(uiSettings.downloadManager == 0){
+                        val intent = Intent(Intent.ACTION_VIEW).apply {
+                            setDataAndType(Uri.parse(video.url.url), "video/*")
+                        }
+                        copyToClipboard(video.url.url, true)
+                        dismiss()
+                        startActivity(Intent.createChooser(intent, "Open Video in :"))
                     }
-                    copyToClipboard(video.url.url,true)
-                    dismiss()
-                    startActivity(Intent.createChooser(intent,"Open Video in :"))
-                    true
+                    if(uiSettings.downloadManager == 1){
+                        // 1DM integration
+                        val pm = context!!.packageManager
+                        val appName = if (isPackageInstalled("idm.internet.download.manager.plus", pm)) {
+                            "idm.internet.download.manager.plus"
+                        } else if (isPackageInstalled("idm.internet.download.manager", pm)) {
+                            "idm.internet.download.manager"
+                        }
+                        else if (isPackageInstalled("idm.internet.download.manager.adm.lite", pm)) {
+                            "idm.internet.download.manager.adm.lite"
+                        } else {
+                            ""
+                        }
+                        if (appName.isNotEmpty()) {
+                            val intent = Intent(Intent.ACTION_VIEW).apply {
+                                addCategory(Intent.CATEGORY_DEFAULT)
+                                data = Uri.parse(video.url.url)
+                                putExtra("extra_filename", "[EP " + episode.number + "] " + episode.title.toString())
+                                setPackage(appName)
+                                setClassName(appName, "idm.internet.download.manager.Downloader")
+                            }
+                            startActivity(intent)
+                        } else {
+                            toast("Download Manager not found")
+                            val intent = Intent(Intent.ACTION_VIEW).apply {
+                                setDataAndType(Uri.parse(video.url.url), "video/*")
+                            }
+                            copyToClipboard(video.url.url, true)
+                            dismiss()
+                            startActivity(Intent.createChooser(intent, "Open Video in :"))
+                        }
+                    }
+                    if(uiSettings.downloadManager == 2) {
+                        val pm = context!!.packageManager
+                        if(isPackageInstalled("com.tachibana.downloader", pm)){
+                            val i = Intent(Intent.ACTION_SEND).apply {
+                                data = Uri.parse(video.url.url)
+                                setPackage("com.tachibana.downloader")
+                                setClassName(
+                                    "com.tachibana.downloader",
+                                    "com.tachibana.downloader.ui.adddownload.AddDownloadActivity"
+                                )
+                            }
+                            startActivity(i)
+                        }
+                        else{
+                            toast("Download Manager not found")
+                            val i = Intent(Intent.ACTION_VIEW).apply {
+                                data = Uri.parse(video.url.url)
+                            }
+                            copyToClipboard(video.url.url, true)
+                            dismiss()
+                            startActivity(Intent.createChooser(i, "Open Video in :"))
+                        }
+                    }
+                        true
                 }
             }
         }

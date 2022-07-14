@@ -1,5 +1,6 @@
 package ani.saikou.settings
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.drawable.Animatable
 import android.os.Build.*
@@ -278,6 +279,16 @@ OS Version: $CODENAME $RELEASE ($SDK_INT)
                 }
                 show(supportFragmentManager, "dialog")
             }
+        }
+        val managers = arrayOf("None","1DM [pro/lite]", "Download-Navi")
+        val downloadManagerDialog = AlertDialog.Builder(this, R.style.DialogTheme).setTitle("Preferred Download Manager")
+        binding.downloadManager.setOnClickListener {
+            downloadManagerDialog.setSingleChoiceItems(managers, uiSettings.downloadManager) { dialog, count ->
+                uiSettings.downloadManager = count
+                saveData("ui_settings", uiSettings)
+                toast(uiSettings.downloadManager.toString())
+                dialog.dismiss()
+            }.show()
         }
     }
 }

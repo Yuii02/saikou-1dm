@@ -134,6 +134,7 @@
     <string name="default_source">Default Source</string>
     <string name="show_yt">Show Youtube Link</string>
     <string name="default_ep_view">Default Episode Layout</string>
+    <string name="downloadManager_button">Download Manager</string>
     <string name="default_chp_view">Default Chapter Layout</string>
     <string name="ui">User Interface</string>
     <string name="common">Common</string>
