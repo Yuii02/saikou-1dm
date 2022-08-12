@@ -380,7 +380,7 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
                 })
                 dialog.findViewById<TextView>(R.id.seekbar_title).text = getString(R.string.skip_time)
                 dialog.findViewById<TextView>(R.id.seekbar_value).text = settings.skipTime.toString()
-
+                dialog.window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 dialog.show()
                 true
             }
