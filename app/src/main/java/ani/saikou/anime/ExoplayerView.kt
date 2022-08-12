@@ -367,7 +367,8 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
-                dialog.findViewById<Slider>(R.id.seekbar).value = settings.skipTime.toFloat()
+                if (settings.skipTime <= 120){ dialog.findViewById<Slider>(R.id.seekbar).value = settings.skipTime.toFloat() }
+                else { dialog.findViewById<Slider>(R.id.seekbar).value = 120f }
                 dialog.findViewById<Slider>(R.id.seekbar).addOnChangeListener { _, value, _ ->
                     settings.skipTime = value.toInt()
                     saveData(player, settings)
