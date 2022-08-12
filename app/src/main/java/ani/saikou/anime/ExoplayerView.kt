@@ -26,10 +26,7 @@ import android.util.Rational
 import android.util.TypedValue
 import android.view.*
 import android.view.animation.AnimationUtils
-import android.widget.AdapterView
-import android.widget.ImageButton
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -362,14 +359,28 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
                     exoPlayer.seekTo(exoPlayer.currentPosition + settings.skipTime * 1000)
             }
             playerView.findViewById<View>(R.id.exo_skip).setOnLongClickListener {
-                val times = arrayOf("0", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95", "100", "105", "110", "115", "120")
-                val timesDialog = AlertDialog.Builder(this, R.style.DialogTheme).setTitle("Skip Time")
-                timesDialog.setSingleChoiceItems(times, (settings.skipTime/5)) { dialog, i ->
-                    settings.skipTime = i * 5
+                val dialog = Dialog(this, R.style.DialogTheme)
+                dialog.setContentView(R.layout.item_seekbar_dialog)
+                dialog.setCancelable(true)
+                dialog.window?.setLayout(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                dialog.findViewById<Slider>(R.id.seekbar).value = settings.skipTime.toFloat()
+                dialog.findViewById<Slider>(R.id.seekbar).addOnChangeListener { _, value, _ ->
+                    settings.skipTime = value.toInt()
                     saveData(player, settings)
-                    dialog.dismiss()
                     playerView.findViewById<TextView>(R.id.exo_skip_time).text = settings.skipTime.toString()
-                }.show()
+                    dialog.findViewById<TextView>(R.id.seekbar_value).text = settings.skipTime.toString()
+                }
+                dialog.findViewById<Slider>(R.id.seekbar).addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+                    override fun onStartTrackingTouch(slider: Slider) {}
+                    override fun onStopTrackingTouch(slider: Slider) {dialog.dismiss()}
+                })
+                dialog.findViewById<TextView>(R.id.seekbar_title).text = getString(R.string.skip_time)
+                dialog.findViewById<TextView>(R.id.seekbar_value).text = settings.skipTime.toString()
+
+                dialog.show()
                 true
             }
         } else {
