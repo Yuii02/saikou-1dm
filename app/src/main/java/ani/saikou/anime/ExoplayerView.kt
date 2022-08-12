@@ -362,6 +362,7 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
                 val dialog = Dialog(this, R.style.DialogTheme)
                 dialog.setContentView(R.layout.item_seekbar_dialog)
                 dialog.setCancelable(true)
+                dialog.setCanceledOnTouchOutside(true)
                 dialog.window?.setLayout(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
