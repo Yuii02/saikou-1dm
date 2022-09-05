@@ -1,5 +1,6 @@
 package ani.saikou
 
+import android.Manifest
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -10,6 +11,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources.getSystem
 import android.graphics.Color
@@ -27,6 +29,8 @@ import android.view.animation.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getExternalFilesDirs
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.math.MathUtils.clamp
@@ -613,30 +617,38 @@ fun download(activity: Activity, episode: Episode, animeTitle: String) {
     val title = "Episode ${episode.number}${if (episode.title != null) " - ${episode.title}" else ""}".replace(regex, "")
     val name = "$title${if (video.size != null) "(${video.size}p)" else ""}.mp4"
     CoroutineScope(Dispatchers.IO).launch {
-        try {
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        }
+        toast(ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE).toString())
+        if ( ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            try {
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
-            val arrayOfFiles = getExternalFilesDirs(activity, null)
-            if (loadData<Boolean>("sd_dl") == true && arrayOfFiles.size > 1 && arrayOfFiles[0] != null && arrayOfFiles[1] != null) {
-                val parentDirectory = arrayOfFiles[1].toString() + "/Anime/${aTitle}/"
-                val direct = File(parentDirectory)
-                if (!direct.exists()) direct.mkdirs()
-                request.setDestinationUri(Uri.fromFile(File("$parentDirectory$name")))
-            } else {
-                val direct = File(Environment.DIRECTORY_DOWNLOADS + "/Saikou/Anime/${aTitle}/")
-                if (!direct.exists()) direct.mkdirs()
-                request.setDestinationInExternalPublicDir(
-                    Environment.DIRECTORY_DOWNLOADS,
-                    "/Saikou/Anime/${aTitle}/$name"
-                )
+                val arrayOfFiles = getExternalFilesDirs(activity, null)
+                if (loadData<Boolean>("sd_dl") == true && arrayOfFiles.size > 1 && arrayOfFiles[0] != null && arrayOfFiles[1] != null) {
+                    val parentDirectory = arrayOfFiles[1].toString() + "/Anime/${aTitle}/"
+                    val direct = File(parentDirectory)
+                    if (!direct.exists()) direct.mkdirs()
+                    request.setDestinationUri(Uri.fromFile(File("$parentDirectory$name")))
+                } else {
+                    val direct = File(Environment.DIRECTORY_DOWNLOADS + "/Saikou/Anime/${aTitle}/")
+                    if (!direct.exists()) direct.mkdirs()
+                    request.setDestinationInExternalPublicDir(
+                        Environment.DIRECTORY_DOWNLOADS,
+                        "/Saikou/Anime/${aTitle}/$name"
+                    )
+                }
+                request.setTitle("$title:$aTitle")
+                manager.enqueue(request)
+                toast("Started Downloading\n$title : $aTitle")
+            } catch (e: SecurityException) {
+                toast("Please give permission to access Files & Folders from Settings, & Try again.")
+            } catch (e: Exception) {
+                toast(e.toString())
             }
-            request.setTitle("$title:$aTitle")
-            manager.enqueue(request)
-            toast("Started Downloading\n$title : $aTitle")
-        } catch (e: SecurityException) {
+        } else {
             toast("Please give permission to access Files & Folders from Settings, & Try again.")
-        } catch (e: Exception) {
-            toast(e.toString())
         }
     }
 }
