@@ -46,6 +46,7 @@ import ani.saikou.databinding.ItemCountDownBinding
 import ani.saikou.media.Media
 import ani.saikou.others.DisabledReports
 import ani.saikou.parsers.ShowResponse
+import ani.saikou.settings.PlayerSettings
 import ani.saikou.settings.UserInterfaceSettings
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
@@ -644,14 +645,17 @@ fun download(activity: Activity, episode: Episode, animeTitle: String) {
 fun updateAnilistProgress(media: Media, number: String) {
     if (Anilist.userid != null) {
         CoroutineScope(Dispatchers.IO).launch {
+            val player = "player_settings"
+            val settings = loadData<PlayerSettings>(player, toast = false) ?: PlayerSettings().apply { saveData(player, this) }
             val a = number.toFloatOrNull()?.roundToInt()
             if (a != media.userProgress) {
                 Anilist.mutation.editList(
                     media.id,
                     a,
-                    status = if (media.userStatus == "REPEATING") media.userStatus else "CURRENT"
+                    status = if (media.userStatus == "REPEATING") media.userStatus else if(a == media.anime?.totalEpisodes && settings.autoComplete) "COMPLETED" else "CURRENT"
                 )
-                toast("Setting progress to $a")
+                if(a == media.anime?.totalEpisodes && settings.autoComplete) toast("Finished watching ${media.userPreferredName}")
+                else toast("Setting progress to $a")
             }
             media.userProgress = a
             Refresh.all()

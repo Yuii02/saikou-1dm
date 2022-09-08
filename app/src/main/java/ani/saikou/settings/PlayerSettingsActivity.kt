@@ -80,6 +80,12 @@ class PlayerSettingsActivity : AppCompatActivity() {
             saveData(player, settings)
         }
 
+        binding.autoComplete.isChecked = settings.autoComplete
+        binding.autoComplete.setOnCheckedChangeListener { _, isChecked ->
+            settings.autoComplete = isChecked
+            saveData(player, settings)
+        }
+
         //Auto
         binding.playerSettingsAutoPlay.isChecked = settings.autoPlay
         binding.playerSettingsAutoPlay.setOnCheckedChangeListener { _, isChecked ->

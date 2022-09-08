@@ -24,6 +24,7 @@ data class PlayerSettings(
     var askIndividual: Boolean = true,
     var updateForH: Boolean = false,
     var watchPercentage: Float = 0.8f,
+    var autoComplete: Boolean = true,
 
     //Behaviour
     var alwaysContinue: Boolean = true,
