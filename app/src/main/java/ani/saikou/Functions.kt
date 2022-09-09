@@ -2,10 +2,7 @@ package ani.saikou
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.Application
-import android.app.DatePickerDialog
-import android.app.DownloadManager
+import android.app.*
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -60,11 +57,10 @@ import com.google.android.material.internal.ViewUtils
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import nl.joery.animatedbottombar.AnimatedBottomBar
 import java.io.*
+import java.lang.Runnable
 import java.lang.reflect.Field
 import java.util.*
 import kotlin.math.*
@@ -652,9 +648,9 @@ fun updateAnilistProgress(media: Media, number: String) {
                 Anilist.mutation.editList(
                     media.id,
                     a,
-                    status = if (media.userStatus == "REPEATING") media.userStatus else if(a == media.anime?.totalEpisodes && settings.autoComplete) "COMPLETED" else "CURRENT"
+                    status = if (media.userStatus == "REPEATING") media.userStatus else if((a == media.anime?.totalEpisodes || a == media.manga?.totalChapters) && settings.autoComplete) "COMPLETED" else "CURRENT"
                 )
-                if(a == media.anime?.totalEpisodes && settings.autoComplete) toast("Finished watching ${media.userPreferredName}")
+                if((a == media.anime?.totalEpisodes || a == media.manga?.totalChapters) && settings.autoComplete) toast("Finished ${media.userPreferredName}")
                 else toast("Setting progress to $a")
             }
             media.userProgress = a
