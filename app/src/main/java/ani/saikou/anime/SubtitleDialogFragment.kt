@@ -68,7 +68,6 @@ class SubtitleDialogFragment : BottomSheetDialogFragment() {
                     "zh-CN" -> "[zh-CN] Chinese (Simplified)"
                     "tr-TR" -> "[tr-TR] Turkish"
                     "ar-ME" -> "[ar-ME] Arabic"
-                    ""      -> ""
                     else -> "[${subtitles[position - 1].language}]"
                 }
                 if(episode.selectedSubtitle != position-1)
