@@ -184,18 +184,18 @@
     <string name="resize_mode_button">Default Resize Mode</string>
     <string name="subtitles">Subtitles</string>
     <string name="subtitle_toggle">Subtitles</string>
-    <string name="subtitle_toggle_kamyroll">For this to take effect in Kamyroll, please restart the app.</string>
+    <string name="subtitle_toggle_kamyroll">For this to take effect in Hard-Subbed Kamyroll, please restart the app. (Or use Soft-Sub and select none as subtitle)</string>
     <string name="primary_sub_color_select">Subtitle Color</string>
     <string name="secondary_sub_color_select">Subtitle Outline Color</string>
     <string name="secondary_sub_outline_type_select">Subtitle Outline Type</string>
     <string name="sub_background_color_select">Subtitle Background Color</string>
     <string name="sub_window_color_select">Subtitle Window Color</string>
     <string name="sub_window_color_info">"The subtitle window is the part left and right from them. (where the background isn't)"</string>
-    <string name="sub_color_info"><b>Note:</b> Changing Subtitle formatting only works with Zoro!</string>
+    <string name="sub_color_info"><b>Note:</b> Changing Subtitle formatting only works with Soft-Subbed Sources such as Zoro and Kamyroll!</string>
     <string name="sub_font_select">Subtitle Font</string>
     <string name="subtitle_font_size">Subtitle Size</string>
     <string name="subtitle_language_button">Subtitle Language</string>
-    <string name="subtitle_language_info"><b>Note:</b> The Subtitle-language can only be changed for <b>Kamyroll</b>. Changing it will restart the app. <b>Some languages might not work!</b></string>
+    <string name="subtitle_language_info"><b>Note:</b> The episode title- and description-language can only be changed for <b>Kamyroll</b>. For changes to take effect the app needs to restart. <b>Some languages might not work!</b></string>
 
     <string name="auto">Auto</string>
     <string name="auto_play_next_episode">Autoplay Next Episode</string>
