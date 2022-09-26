@@ -237,6 +237,36 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
             3    -> EDGE_TYPE_NONE // No outline
             else -> EDGE_TYPE_OUTLINE // Normal
         }
+        val subBackground = when (settings.subBackground) {
+            0    -> Color.TRANSPARENT
+            1    -> Color.BLACK
+            2    -> Color.DKGRAY
+            3    -> Color.GRAY
+            4    -> Color.LTGRAY
+            5    -> Color.WHITE
+            6    -> Color.RED
+            7    -> Color.YELLOW
+            8    -> Color.GREEN
+            9    -> Color.CYAN
+            10   -> Color.BLUE
+            11   -> Color.MAGENTA
+            else -> Color.TRANSPARENT
+        }
+        val subWindow = when (settings.subWindow) {
+            0    -> Color.TRANSPARENT
+            1    -> Color.BLACK
+            2    -> Color.DKGRAY
+            3    -> Color.GRAY
+            4    -> Color.LTGRAY
+            5    -> Color.WHITE
+            6    -> Color.RED
+            7    -> Color.YELLOW
+            8    -> Color.GREEN
+            9    -> Color.CYAN
+            10   -> Color.BLUE
+            11   -> Color.MAGENTA
+            else -> Color.TRANSPARENT
+        }
         val font = when (settings.font) {
             0    -> ResourcesCompat.getFont(this, R.font.poppins_semi_bold)
             1    -> ResourcesCompat.getFont(this, R.font.poppins_bold)
@@ -247,8 +277,8 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
         playerView.subtitleView?.setStyle(
             CaptionStyleCompat(
                 primaryColor,
-                Color.TRANSPARENT,
-                Color.TRANSPARENT,
+                subBackground,
+                subWindow,
                 outline,
                 secondaryColor,
                 font

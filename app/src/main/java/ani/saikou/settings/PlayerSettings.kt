@@ -14,6 +14,8 @@ data class PlayerSettings(
     var primaryColor: Int = 4,
     var secondaryColor: Int = 0,
     var outline: Int = 0,
+    var subBackground: Int = 0,
+    var subWindow: Int = 0,
     var font: Int = 0,
     var fontSize: Int = 20,
     var locale: Int = 2,
