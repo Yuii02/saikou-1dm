@@ -54,7 +54,23 @@ class SubtitleDialogFragment : BottomSheetDialogFragment() {
                     dismiss()
                 }
             } else {
-                binding.subtitleTitle.text = subtitles[position - 1].language
+                binding.subtitleTitle.text = when (subtitles[position - 1].language) {
+                    "ja-JP" -> "[ja-JP] Japanese"
+                    "en-US" -> "[en-US] English"
+                    "de-DE" -> "[de-DE] German"
+                    "es-ES" -> "[es-ES] Spanish"
+                    "es-419" -> "[es-419] Spanish"
+                    "fr-FR" -> "[fr-FR] French"
+                    "it-IT" -> "[it-IT] Italian"
+                    "pt-BR" -> "[pt-BR] Portuguese (Brazil)"
+                    "pt-PT" -> "[pt-PT] Portuguese (Portugal)"
+                    "ru-RU" -> "[ru-RU] Russian"
+                    "zh-CN" -> "[zh-CN] Chinese (Simplified)"
+                    "tr-TR" -> "[tr-TR] Turkish"
+                    "ar-ME" -> "[ar-ME] Arabic"
+                    ""      -> ""
+                    else -> "[${subtitles[position - 1].language}]"
+                }
                 if(episode.selectedSubtitle != position-1)
                     binding.root.setCardBackgroundColor(TRANSPARENT)
                 binding.root.setOnClickListener {
