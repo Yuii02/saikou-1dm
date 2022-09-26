@@ -144,6 +144,7 @@ class Kamyroll : AnimeParser() {
                         "zh-CN" -> "[zh-CN] Chinese (Simplified)"
                         "tr-TR" -> "[tr-TR] Turkish"
                         "ar-ME" -> "[ar-ME] Arabic"
+                        ""      -> ""
                         else -> "[${it.hardsubLocale}] "
                     } + if(it.hardsubLocale != "") " Hard-Subbed" else "Soft/No Subs",
                 )
