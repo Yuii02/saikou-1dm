@@ -188,6 +188,9 @@
     <string name="primary_sub_color_select">Subtitle Color</string>
     <string name="secondary_sub_color_select">Subtitle Outline Color</string>
     <string name="secondary_sub_outline_type_select">Subtitle Outline Type</string>
+    <string name="sub_background_color_select">Subtitle Background Color</string>
+    <string name="sub_window_color_select">Subtitle Window Color</string>
+    <string name="sub_window_color_info">"The Subtitle Window is the part left and right from them. (where the background isn't)"</string>
     <string name="sub_color_info"><b>Note:</b> Changing Subtitle formatting only works with Zoro!</string>
     <string name="sub_font_select">Subtitle Font</string>
     <string name="subtitle_font_size">Subtitle Size</string>

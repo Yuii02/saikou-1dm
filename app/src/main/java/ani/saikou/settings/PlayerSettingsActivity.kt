@@ -323,6 +323,51 @@ class PlayerSettingsActivity : AppCompatActivity() {
                 dialog.dismiss()
             }.show()
         }
+        val colorsSubBackground = arrayOf(
+            "Transparent",
+            "Black",
+            "Dark Gray",
+            "Gray",
+            "Light Gray",
+            "White",
+            "Red",
+            "Yellow",
+            "Green",
+            "Cyan",
+            "Blue",
+            "Magenta"
+        )
+        val subBackgroundDialog = AlertDialog.Builder(this, R.style.DialogTheme).setTitle("Outline Sub Color")
+        binding.videoSubColorBackground.setOnClickListener {
+            subBackgroundDialog.setSingleChoiceItems(colorsSubBackground, settings.subBackground) { dialog, count2 ->
+                settings.subBackground = count2
+                saveData(player, settings)
+                dialog.dismiss()
+            }.show()
+        }
+
+        val colorsSubWindow = arrayOf(
+            "Transparent",
+            "Black",
+            "Dark Gray",
+            "Gray",
+            "Light Gray",
+            "White",
+            "Red",
+            "Yellow",
+            "Green",
+            "Cyan",
+            "Blue",
+            "Magenta"
+        )
+        val subWindowDialog = AlertDialog.Builder(this, R.style.DialogTheme).setTitle("Outline Sub Color")
+        binding.videoSubColorWindow.setOnClickListener {
+            subWindowDialog.setSingleChoiceItems(colorsSubWindow, settings.subWindow) { dialog, count2 ->
+                settings.subWindow = count2
+                saveData(player, settings)
+                dialog.dismiss()
+            }.show()
+        }
         val fonts = arrayOf("Poppins Semi Bold", "Poppins Bold", "Poppins", "Poppins Thin")
         val fontDialog = AlertDialog.Builder(this, R.style.DialogTheme).setTitle("Subtitle Font")
         binding.videoSubFont.setOnClickListener {
