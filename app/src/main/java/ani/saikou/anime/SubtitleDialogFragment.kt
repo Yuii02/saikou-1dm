@@ -13,6 +13,7 @@ import ani.saikou.BottomSheetDialogFragment
 import ani.saikou.R
 import ani.saikou.databinding.BottomSheetSubtitlesBinding
 import ani.saikou.databinding.ItemSubtitleTextBinding
+import ani.saikou.loadData
 import ani.saikou.media.MediaDetailsViewModel
 import ani.saikou.parsers.Subtitle
 import ani.saikou.saveData
@@ -72,8 +73,13 @@ class SubtitleDialogFragment : BottomSheetDialogFragment() {
                     "ar-ME" -> "[ar-ME] Arabic"
                     else -> "[${subtitles[position - 1].language}]"
                 }
-                if(episode.selectedSubtitle != position-1)
-                    binding.root.setCardBackgroundColor(TRANSPARENT)
+                model.getMedia().observe(viewLifecycleOwner) { media ->
+                    val mediaID: Int = media.id
+                    val selSubs: String? = loadData("subLang_${mediaID}", activity)
+                    if (episode.selectedSubtitle != position - 1 && selSubs != subtitles[position - 1].language) {
+                        binding.root.setCardBackgroundColor(TRANSPARENT)
+                    }
+                }
                 val activity: Activity = requireActivity() as ExoplayerView
                 binding.root.setOnClickListener {
                     episode.selectedSubtitle = position - 1
