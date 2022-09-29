@@ -982,11 +982,34 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
         extractor = ext
         video = ext.videos.getOrNull(episode.selectedVideo) ?: return
 
-        subtitle = ext.subtitles.let { sub ->
-            when (episode.selectedSubtitle) {
-                null -> null
-                -1   -> sub.find { it.language == "English" || it.language == "en-US" }
-                else -> sub.getOrNull(episode.selectedSubtitle!!)
+        val subLang: String? = loadData("subLang_${media.id}", this)
+        if(subLang == null) {
+            subtitle = ext.subtitles.let { sub ->
+                when (episode.selectedSubtitle) {
+                    null -> null
+                    -1   -> sub.find { it.language == "English" || it.language == "en-US" }
+                    else -> sub.getOrNull(episode.selectedSubtitle!!)
+                }
+            }
+        } else {
+            subtitle = ext.subtitles.let { sub ->
+                sub.find { it.language == subLang || it.language == when(subLang){
+                    "ja-JP"  -> "Japanese"
+                    "en-US"  -> "English"
+                    "de-DE"  -> "German"
+                    "es-ES"  -> "Spanish"
+                    "es-419" -> "Spanish"
+                    "fr-FR"  -> "French"
+                    "it-IT"  -> "Italian"
+                    "pt-BR"  -> "Portuguese (Brazil)"
+                    "pt-PT"  -> "Portuguese (Portugal)"
+                    "ru-RU"  -> "Russian"
+                    "zh-CN"  -> "Chinese"
+                    "tr-TR"  -> "Turkish"
+                    "ar-ME"  -> "Arabic"
+                    else     -> "English"
+                    }
+                }
             }
         }
 

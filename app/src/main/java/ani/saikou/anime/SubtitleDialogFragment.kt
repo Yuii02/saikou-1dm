@@ -1,5 +1,6 @@
 package ani.saikou.anime
 
+import android.app.Activity
 import android.graphics.Color.TRANSPARENT
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import ani.saikou.databinding.BottomSheetSubtitlesBinding
 import ani.saikou.databinding.ItemSubtitleTextBinding
 import ani.saikou.media.MediaDetailsViewModel
 import ani.saikou.parsers.Subtitle
+import ani.saikou.saveData
 
 class SubtitleDialogFragment : BottomSheetDialogFragment() {
     private var _binding: BottomSheetSubtitlesBinding? = null
@@ -72,9 +74,14 @@ class SubtitleDialogFragment : BottomSheetDialogFragment() {
                 }
                 if(episode.selectedSubtitle != position-1)
                     binding.root.setCardBackgroundColor(TRANSPARENT)
+                val activity: Activity = requireActivity() as ExoplayerView
                 binding.root.setOnClickListener {
                     episode.selectedSubtitle = position - 1
                     model.setEpisode(episode, "Subtitle")
+                    model.getMedia().observe(viewLifecycleOwner){media ->
+                        val mediaID: Int = media.id
+                        saveData("subLang_${mediaID}", subtitles[position - 1].language, activity)
+                    }
                     dismiss()
                 }
             }
