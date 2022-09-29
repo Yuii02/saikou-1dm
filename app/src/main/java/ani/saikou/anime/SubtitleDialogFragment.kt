@@ -50,10 +50,20 @@ class SubtitleDialogFragment : BottomSheetDialogFragment() {
             val binding = holder.binding
             if (position == 0) {
                 binding.subtitleTitle.setText(R.string.none)
-                if(episode.selectedSubtitle!=null) binding.root.setCardBackgroundColor(TRANSPARENT)
+                model.getMedia().observe(viewLifecycleOwner) { media ->
+                    val mediaID: Int = media.id
+                    val selSubs: String? = loadData("subLang_${mediaID}", activity)
+                    if (episode.selectedSubtitle != null && selSubs != "None") {
+                        binding.root.setCardBackgroundColor(TRANSPARENT)
+                    }
+                }
                 binding.root.setOnClickListener {
                     episode.selectedSubtitle = null
                     model.setEpisode(episode, "Subtitle")
+                    model.getMedia().observe(viewLifecycleOwner){media ->
+                        val mediaID: Int = media.id
+                        saveData("subLang_${mediaID}", "None", activity)
+                    }
                     dismiss()
                 }
             } else {

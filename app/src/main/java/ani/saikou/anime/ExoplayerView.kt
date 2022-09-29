@@ -991,6 +991,9 @@ class ExoplayerView : AppCompatActivity(), Player.Listener {
                     else -> sub.getOrNull(episode.selectedSubtitle!!)
                 }
             }
+        }
+        if(subLang == "none") {
+            subtitle = ext.subtitles.let { null }
         } else {
             subtitle = ext.subtitles.let { sub ->
                 sub.find { it.language == subLang || it.language == when(subLang){
