@@ -81,6 +81,12 @@ class SubtitleDialogFragment : BottomSheetDialogFragment() {
                     "zh-CN" -> "[zh-CN] Chinese (Simplified)"
                     "tr-TR" -> "[tr-TR] Turkish"
                     "ar-ME" -> "[ar-ME] Arabic"
+                    "ar-SA" -> "[ar-SA] Arabic"
+                    "uk-UK" -> "[uk-UK] Ukrainian"
+                    "he-IL" -> "[he-IL] Hebrew"
+                    "pl-PL" -> "[pl-PL] Polish"
+                    "ro-RO" -> "[ro-RO] Romanian"
+                    "sv-SE" -> "[sv-SE] Swedish"
                     else -> "[${subtitles[position - 1].language}]"
                 }
                 model.getMedia().observe(viewLifecycleOwner) { media ->
