@@ -87,6 +87,9 @@ class SubtitleDialogFragment : BottomSheetDialogFragment() {
                     "pl-PL" -> "[pl-PL] Polish"
                     "ro-RO" -> "[ro-RO] Romanian"
                     "sv-SE" -> "[sv-SE] Swedish"
+                    "in-In" -> "[in-IN] Indonesian"
+
+
                     else -> if(subtitles[position - 1].language matches Regex("([a-z]{2})-([A-Z]{2}|\\d{3})")) "[${subtitles[position - 1].language}]" else subtitles[position - 1].language
                 }
                 model.getMedia().observe(viewLifecycleOwner) { media ->
